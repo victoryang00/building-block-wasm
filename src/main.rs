@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use cell::Cellule;
 use gloo::timers::callback::Interval;
 use rand::Rng;
@@ -5,6 +7,10 @@ use yew::html::Scope;
 use yew::{classes, html, Component, Context, Html};
 
 mod cell;
+type Point = (i8, i8);
+fn is_point_in_polygon(t1: i8, t2: i8, t3: i8, t4: i8, p: &Point) -> bool {
+    p.0 <= t1 && p.0 >= t2 && p.1 >= t3 && p.1 <= t4
+}
 
 pub enum Msg {
     Random,
@@ -18,6 +24,7 @@ pub enum Msg {
 
 pub struct App {
     active: bool,
+    chess_map: HashMap<Vec<(i8, i8, i8, i8)>, String>,
     cellules: Vec<Cellule>,
     cellules_width: usize,
     cellules_height: usize,
@@ -94,9 +101,15 @@ impl App {
             if cellule.is_alive() {
                 "cellule-live"
             } else {
-                dbg!(row, col);
+                // log::info!("{},{}",row, col);
+                for (key, value) in self.chess_map.iter() {
+                    for k in key {
+                        if is_point_in_polygon(k.0, k.1, k.2, k.3, &(row as i8, col as i8)) {
+                            return value.into();
+                        }
+                    }
+                }
                 "cellule-dead"
-
             }
         };
         html! {
@@ -114,10 +127,12 @@ impl Component for App {
         let callback = ctx.link().callback(|_| Msg::Tick);
         let interval = Interval::new(200, move || callback.emit(()));
 
-        let (cellules_width, cellules_height) = (53, 40);
-
+        let (cellules_width, cellules_height) = (53, 29);
+        let mut chess_map = HashMap::new();
+        chess_map.insert(vec![(13, 0), (13, 4), (17, 4), (17, 8)], "math".to_string());
         Self {
             active: false,
+            chess_map,
             cellules: vec![Cellule::new_dead(); cellules_width * cellules_height],
             cellules_width,
             cellules_height,
@@ -126,34 +141,21 @@ impl Component for App {
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        if !self.active {
+            self.random_mutate();
+            log::info!("Random");
+            self.active = true;
+            log::info!("Start");
+
+            return true;
+        }
         match msg {
-            Msg::Random => {
-                self.random_mutate();
-                log::info!("Random");
-                true
-            }
-            Msg::Start => {
-                self.active = true;
-                log::info!("Start");
-                false
-            }
             Msg::Step => {
                 self.step();
                 true
             }
-            Msg::Reset => {
-                self.reset();
-                log::info!("Reset");
-                true
-            }
-            Msg::Stop => {
-                self.active = false;
-                log::info!("Stop");
-                false
-            }
             Msg::ToggleCellule(idx) => {
-                let cellule = self.cellules.get_mut(idx).unwrap();
-                cellule.toggle();
+                self.cellules[idx].toggle();
                 true
             }
             Msg::Tick => {
@@ -164,6 +166,7 @@ impl Component for App {
                     false
                 }
             }
+            _ => false,
         }
     }
 
@@ -185,33 +188,26 @@ impl Component for App {
                         </div>
                     }
                 });
-
         html! {
             <div>
                 <section class="game-container">
                     <header class="app-header">
-                        <img alt="The app logo" src="favicon.ico" class="app-logo"/>
-                        <h1 class="app-title">{ "Game of Life" }</h1>
+                        // <img alt="The app logo" src="favicon.ico" class="app-logo"/>
+                        // <h1 class="app-title">{ "Computer Science Building Block" }</h1>
                     </header>
                     <section class="game-area">
                         <div class="game-of-life">
                             { for cell_rows }
                         </div>
-                        <div class="game-buttons">
-                            <button class="game-button" onclick={ctx.link().callback(|_| Msg::Random)}>{ "Random" }</button>
-                            <button class="game-button" onclick={ctx.link().callback(|_| Msg::Step)}>{ "Step" }</button>
-                            <button class="game-button" onclick={ctx.link().callback(|_| Msg::Start)}>{ "Start" }</button>
-                            <button class="game-button" onclick={ctx.link().callback(|_| Msg::Stop)}>{ "Stop" }</button>
-                            <button class="game-button" onclick={ctx.link().callback(|_| Msg::Reset)}>{ "Reset" }</button>
-                        </div>
+                        // <div class="game-buttons">
+                        //     <button class="game-button" onclick={ctx.link().callback(|_| Msg::Random)}>{ "Random" }</button>
+                        //     <button class="game-button" onclick={ctx.link().callback(|_| Msg::Step)}>{ "Step" }</button>
+                        //     <button class="game-button" onclick={ctx.link().callback(|_| Msg::Start)}>{ "Start" }</button>
+                        //     <button class="game-button" onclick={ctx.link().callback(|_| Msg::Stop)}>{ "Stop" }</button>
+                        //     <button class="game-button" onclick={ctx.link().callback(|_| Msg::Reset)}>{ "Reset" }</button>
+                        // </div>
                     </section>
                 </section>
-                <footer class="app-footer">
-                    <strong class="footer-text">
-                      { "Game of Life - a yew experiment " }
-                    </strong>
-                    <a href="https://github.com/yewstack/yew" target="_blank">{ "source" }</a>
-                </footer>
             </div>
         }
     }

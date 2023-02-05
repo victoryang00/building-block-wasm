@@ -85,6 +85,62 @@ body {
   background-color: white;
 }
 
+.cellule-dead-math {
+  background-color: #f5fbd5;
+}
+
+.cellule-dead-ai {
+  background-color: #bdd7ee;
+}
+
+.cellule-dead-ds {
+  background-color: #f2f2f2;
+}
+
+.cellule-dead-os {
+  background-color: #a9d18e;
+}
+
+.cellule-dead-app {
+  background-color: #dfebf7;
+}
+
+.cellule-dead-framework {
+  background-color: #e3efd9;
+}
+
+.cellule-dead-framework {
+  background-color: #c5e0b4;
+}
+
+.cellule-dead-compiler {
+  background-color: #c5e0b4;
+}
+
+.cellule-dead-distributed {
+  background-color: #fdeaf7;
+}
+
+.cellule-dead-network {
+  background-color: #d6dce5;
+}
+
+.cellule-dead-pc {
+  background-color: #ebe6ff;
+}
+
+.cellule-dead-ca {
+  background-color: #fbe5d6;
+}
+
+.cellule-dead-circuit {
+  background-color: #d9d9d9;
+}
+
+.cellule-dead-reconfigurable {
+  background-color: #f8caad;
+}
+
 .cellule-live {
   background-color: black;
 }
@@ -98,6 +154,7 @@ body {
   from {
     transform: scale(0.8);
   }
+
   to {
     transform: scale(1.2);
   }

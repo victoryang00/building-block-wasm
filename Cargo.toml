@@ -1,0 +1,16 @@
+[package]
+authors = [
+  "Yiwei Yang <victoryang00@ucsc.edu>",
+]
+edition = "2021"
+license = "MIT"
+name = "building_block"
+version = "0.1.0"
+
+[dependencies]
+getrandom = {version = "0.2", features = ["js"]}
+gloo = "0.8"
+log = "0.4"
+rand = "0.8"
+wasm-logger = "0.2"
+yew = {version = "0.20.0", features = ["csr"]}

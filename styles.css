@@ -76,9 +76,9 @@ body {
 
 .game-cellule {
   display: inline-block;
-  width: 8px;
-  height: 8px;
-  border: 1px solid #ccc;
+  width: 10px;
+  height: 10px;
+  border: 0px solid #ccc;
 }
 
 .cellule-dead {

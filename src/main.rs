@@ -127,7 +127,7 @@ impl App {
         // log::info!("{}",href);
 
         html! {
-            <a href={href}>
+            <a target={"_parent"} href={href}>
             <div key={idx} class={classes!("game-cellule", cellule_status)}
                 onclick={link.callback(move |_| Msg::ToggleCellule(idx))}>
             </div>
@@ -303,17 +303,11 @@ impl Component for App {
                     }
                 });
         html! {
-            <div>
-                <section class="game-container">
-                    <header class="app-header">
-                    </header>
-                    <section class="game-area">
-                        <div class="game-of-life">
-                            { for cell_rows }
-                        </div>
-                    </section>
-                </section>
-            </div>
+            <span>
+                    <div class="game-of-life">
+                        { for cell_rows }
+                    </div>
+            </span>
         }
     }
 }

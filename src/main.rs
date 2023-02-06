@@ -97,20 +97,22 @@ impl App {
         // get the current location of the cellule
         let row = idx / self.cellules_width;
         let col = idx % self.cellules_width;
-        let cellule_status = {
+        let cellule_status: String = {
+            let mut res = "cellue-live".to_owned();
             if cellule.is_alive() {
-                "cellule-live"
-            } else {
-                // log::info!("{},{}",row, col);
                 for (key, value) in self.chess_map.iter() {
                     for k in key {
                         if is_point_in_polygon(k.0, k.1, k.2, k.3, &(row as i8, col as i8)) {
-                            return value.into();
+                            // log::info!("{},{}",row, col);
+                            res = value.clone();
                         }
                     }
                 }
-                "cellule-dead"
+                // res = "cellue-live".to_owned();
+            } else {
+                res = "cellue-dead".to_owned();
             }
+            res
         };
         html! {
             <div key={idx} class={classes!("game-cellule", cellule_status)}
@@ -129,7 +131,45 @@ impl Component for App {
 
         let (cellules_width, cellules_height) = (53, 29);
         let mut chess_map = HashMap::new();
-        chess_map.insert(vec![(13, 0), (13, 4), (17, 4), (17, 8)], "math".to_string());
+        chess_map.insert(
+            vec![(4, 0, 0, 13), (7, 4, 0, 17)],
+            "cellule-live-math".to_string(),
+        );
+        chess_map.insert(
+            vec![(4, 0, 14, 30), (8, 4, 18, 30)],
+            "cellule-live-ai".to_string(),
+        );
+        chess_map.insert(
+            vec![(3, 0, 31, 53), (7, 4, 31, 42)],
+            "cellule-live-distributed".to_string(),
+        );
+        chess_map.insert(
+            vec![(13, 8, 37, 47), (8, 4, 42, 47)],
+            "cellule-live-ds".to_string(),
+        );
+        chess_map.insert(
+            vec![(20, 8, 0, 4), (20, 17, 4, 32)],
+            "cellule-live-os".to_string(),
+        );
+        chess_map.insert(vec![(12, 8, 5, 36)], "cellule-live-app".to_string());
+        chess_map.insert(vec![(16, 13, 5, 15)], "cellule-live-framework".to_string());
+        chess_map.insert(vec![(16, 13, 16, 25)], "cellule-live-data".to_string());
+        chess_map.insert(
+            vec![(16, 13, 26, 36), (20, 17, 33, 36)],
+            "cellule-live-compiler".to_string(),
+        );
+        chess_map.insert(vec![(40, 4, 48, 53)], "cellule-live-pc".to_string());
+        chess_map.insert(vec![(20, 14, 37, 47)], "cellule-live-network".to_string());
+        chess_map.insert(
+            vec![(40, 21, 0, 10), (24, 21, 11, 26)],
+            "cellule-live-ca".to_string(),
+        );
+        chess_map.insert(
+            vec![(40, 21, 40, 47), (24, 21, 27, 39)],
+            "cellule-live-reconfigurable".to_string(),
+        );
+        chess_map.insert(vec![(40, 25, 11, 39)], "cellule-live-circuit".to_string());
+        // chess_map.insert(vec![(4,8,0,17)], "math".to_string());
         Self {
             active: false,
             chess_map,
@@ -192,20 +232,11 @@ impl Component for App {
             <div>
                 <section class="game-container">
                     <header class="app-header">
-                        // <img alt="The app logo" src="favicon.ico" class="app-logo"/>
-                        // <h1 class="app-title">{ "Computer Science Building Block" }</h1>
                     </header>
                     <section class="game-area">
                         <div class="game-of-life">
                             { for cell_rows }
                         </div>
-                        // <div class="game-buttons">
-                        //     <button class="game-button" onclick={ctx.link().callback(|_| Msg::Random)}>{ "Random" }</button>
-                        //     <button class="game-button" onclick={ctx.link().callback(|_| Msg::Step)}>{ "Step" }</button>
-                        //     <button class="game-button" onclick={ctx.link().callback(|_| Msg::Start)}>{ "Start" }</button>
-                        //     <button class="game-button" onclick={ctx.link().callback(|_| Msg::Stop)}>{ "Stop" }</button>
-                        //     <button class="game-button" onclick={ctx.link().callback(|_| Msg::Reset)}>{ "Reset" }</button>
-                        // </div>
                     </section>
                 </section>
             </div>

@@ -85,59 +85,59 @@ body {
   background-color: white;
 }
 
-.cellule-dead-math {
-  background-color: #f5fbd5;
+.cellule-live-math {
+  background-color: #e3fe47;
 }
 
-.cellule-dead-ai {
-  background-color: #bdd7ee;
+.cellule-live-ai {
+  background-color: #4f97d6;
 }
 
-.cellule-dead-ds {
-  background-color: #f2f2f2;
+.cellule-live-ds {
+  background-color: #a65b5b;
 }
 
-.cellule-dead-os {
-  background-color: #a9d18e;
+.cellule-live-os {
+  background-color: #60953d;
 }
 
-.cellule-dead-app {
-  background-color: #dfebf7;
+.cellule-live-app {
+  background-color: #86b6e7;
 }
 
-.cellule-dead-framework {
+.cellule-live-data {
+  background-color: #61b269;
+}
+
+.cellule-live-framework {
+  background-color: #c5e0b4;
+}
+
+.cellule-live-compiler {
+  background-color: #c7de6c;
+}
+
+.cellule-live-distributed {
   background-color: #e3efd9;
 }
 
-.cellule-dead-framework {
-  background-color: #c5e0b4;
-}
-
-.cellule-dead-compiler {
-  background-color: #c5e0b4;
-}
-
-.cellule-dead-distributed {
-  background-color: #fdeaf7;
-}
-
-.cellule-dead-network {
+.cellule-live-network {
   background-color: #d6dce5;
 }
 
-.cellule-dead-pc {
-  background-color: #ebe6ff;
+.cellule-live-pc {
+  background-color: #c6bbf1;
 }
 
-.cellule-dead-ca {
+.cellule-live-ca {
   background-color: #fbe5d6;
 }
 
-.cellule-dead-circuit {
+.cellule-live-circuit {
   background-color: #d9d9d9;
 }
 
-.cellule-dead-reconfigurable {
+.cellule-live-reconfigurable {
   background-color: #f8caad;
 }
 

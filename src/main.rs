@@ -24,7 +24,7 @@ pub enum Msg {
 
 pub struct App {
     active: bool,
-    chess_map: HashMap<Vec<(i8, i8, i8, i8)>, String>,
+    chess_map: HashMap<Vec<(i8, i8, i8, i8)>, (String, String)>,
     cellules: Vec<Cellule>,
     cellules_width: usize,
     cellules_height: usize,
@@ -97,27 +97,41 @@ impl App {
         // get the current location of the cellule
         let row = idx / self.cellules_width;
         let col = idx % self.cellules_width;
-        let cellule_status: String = {
+        let (cellule_status, href) = {
             let mut res = "cellue-live".to_owned();
+            let mut res1 = "".to_owned();
             if cellule.is_alive() {
                 for (key, value) in self.chess_map.iter() {
                     for k in key {
                         if is_point_in_polygon(k.0, k.1, k.2, k.3, &(row as i8, col as i8)) {
                             // log::info!("{},{}",row, col);
-                            res = value.clone();
+                            res = value.0.clone();
+                            res1 = value.1.clone();
                         }
                     }
                 }
                 // res = "cellue-live".to_owned();
             } else {
+                for (key, value) in self.chess_map.iter() {
+                    for k in key {
+                        if is_point_in_polygon(k.0, k.1, k.2, k.3, &(row as i8, col as i8)) {
+                            // log::info!("{},{}",row, col);
+                            res1 = value.1.clone();
+                        }
+                    }
+                }
                 res = "cellue-dead".to_owned();
             }
-            res
+            (res, res1)
         };
+        // log::info!("{}",href);
+
         html! {
+            <a href={href}>
             <div key={idx} class={classes!("game-cellule", cellule_status)}
                 onclick={link.callback(move |_| Msg::ToggleCellule(idx))}>
             </div>
+            </a>
         }
     }
 }
@@ -133,42 +147,102 @@ impl Component for App {
         let mut chess_map = HashMap::new();
         chess_map.insert(
             vec![(4, 0, 0, 13), (7, 4, 0, 17)],
-            "cellule-live-math".to_string(),
+            (
+                "cellule-live-math".to_string(),
+                "https://dblp.org/db/conf/stoc/index.html".to_string(),
+            ),
         );
         chess_map.insert(
             vec![(4, 0, 14, 30), (8, 4, 18, 30)],
-            "cellule-live-ai".to_string(),
+            (
+                "cellule-live-ai".to_string(),
+                "https://dblp.org/db/conf/aaai/index.html".to_string(),
+            ),
         );
         chess_map.insert(
             vec![(3, 0, 31, 53), (7, 4, 31, 42)],
-            "cellule-live-distributed".to_string(),
+            (
+                "cellule-live-distributed".to_string(),
+                "https://dblp.org/db/conf/sosp/index.html".to_string(),
+            ),
         );
         chess_map.insert(
             vec![(13, 8, 37, 47), (8, 4, 42, 47)],
-            "cellule-live-ds".to_string(),
+            (
+                "cellule-live-ds".to_string(),
+                "https://dblp.org/db/conf/soda/index.html".to_string(),
+            ),
         );
         chess_map.insert(
             vec![(20, 8, 0, 4), (20, 17, 4, 32)],
-            "cellule-live-os".to_string(),
+            (
+                "cellule-live-os".to_string(),
+                "https://dblp.org/db/conf/osdi/index.html".to_string(),
+            ),
         );
-        chess_map.insert(vec![(12, 8, 5, 36)], "cellule-live-app".to_string());
-        chess_map.insert(vec![(16, 13, 5, 15)], "cellule-live-framework".to_string());
-        chess_map.insert(vec![(16, 13, 16, 25)], "cellule-live-data".to_string());
+        chess_map.insert(
+            vec![(12, 8, 5, 36)],
+            (
+                "cellule-live-app".to_string(),
+                "https://dblp.org/db/conf/nips/index.html".to_string(),
+            ),
+        );
+        chess_map.insert(
+            vec![(16, 13, 5, 15)],
+            (
+                "cellule-live-framework".to_string(),
+                "https://dblp.org/db/conf/asplos/index.html".to_string(),
+            ),
+        );
+        chess_map.insert(
+            vec![(16, 13, 16, 25)],
+            (
+                "cellule-live-data".to_string(),
+                "https://dblp.org/db/conf/vldb/index.html".to_string(),
+            ),
+        );
         chess_map.insert(
             vec![(16, 13, 26, 36), (20, 17, 33, 36)],
-            "cellule-live-compiler".to_string(),
+            (
+                "cellule-live-compiler".to_string(),
+                "https://dblp.org/db/conf/pldi/index.html".to_string(),
+            ),
         );
-        chess_map.insert(vec![(40, 4, 48, 53)], "cellule-live-pc".to_string());
-        chess_map.insert(vec![(20, 14, 37, 47)], "cellule-live-network".to_string());
+        chess_map.insert(
+            vec![(40, 4, 48, 53)],
+            (
+                "cellule-live-pc".to_string(),
+                "https://dblp.org/db/conf/ppopp/index.html".to_string(),
+            ),
+        );
+        chess_map.insert(
+            vec![(20, 14, 37, 47)],
+            (
+                "cellule-live-network".to_string(),
+                "https://dblp.org/db/conf/nsdi/index.html".to_string(),
+            ),
+        );
         chess_map.insert(
             vec![(40, 21, 0, 10), (24, 21, 11, 26)],
-            "cellule-live-ca".to_string(),
+            (
+                "cellule-live-ca".to_string(),
+                "https://dblp.org/db/conf/micro/index.html".to_string(),
+            ),
         );
         chess_map.insert(
             vec![(40, 21, 40, 47), (24, 21, 27, 39)],
-            "cellule-live-reconfigurable".to_string(),
+            (
+                "cellule-live-reconfigurable".to_string(),
+                "https://dblp.org/db/conf/fpga/index.html".to_string(),
+            ),
         );
-        chess_map.insert(vec![(40, 25, 11, 39)], "cellule-live-circuit".to_string());
+        chess_map.insert(
+            vec![(40, 25, 11, 39)],
+            (
+                "cellule-live-circuit".to_string(),
+                "https://dblp.org/db/conf/cav/index.html".to_string(),
+            ),
+        );
         // chess_map.insert(vec![(4,8,0,17)], "math".to_string());
         Self {
             active: false,
